@@ -12,24 +12,26 @@
     ::-webkit-scrollbar {
       display: none;
     }
-    .blur {
-      filter: blur(5px);
-      transition: filter 0.5s ease-in-out;
+    .hidden-search {
+      display: none;
+    }
+    .no-border {
+      border: none;
     }
   </style>
 </head>
 <body class="bg-gray-800 text-gray-900 bg-gradient-to-tr from-blue-950 to-black">
   <!-- Header/Navbar Awal -->
-  <header class="text-white p-4 fixed top-0 w-full z-50 ">
+  <header class="text-white p-4 fixed top-0 w-full z-50">
     <div class="container mx-auto flex justify-between items-center gap-4 flex-wrap">
       <h1 class="text-2xl md:text-3xl font-bold">@mmusy4ffa</h1>
-      <div class="flex-1 flex justify-center order-3 md:order-none mt-4 md:mt-0">
+      <div id="search-bar" class="flex-1 flex justify-center order-3 md:order-none mt-4 md:mt-0">
         <div class="relative h-10 w-full max-w-xs md:w-96 border-2 border-gray-500 rounded-3xl flex items-center">
           <input type="text" placeholder="Search..." class="h-full w-full pl-4 pr-10 bg-transparent text-white focus:outline-none rounded-3xl">
           <i class="bi bi-search absolute right-3 text-white"></i>
         </div>
       </div>
-      <nav class="order-2 md:order-none">
+      <nav class="order-2 md:order-none hidden md:flex">
         <ul class="flex space-x-4 text-sm md:text-base">
           <li><a href="#" class="hover:text-gray-400">Home</a></li>
           <li><a href="#" class="hover:text-gray-400">About</a></li>
@@ -39,6 +41,19 @@
           </li>
         </ul>
       </nav>
+      <div class="md:hidden flex items-center">
+        <button id="menu-button" class="outline-none mobile-menu-button">
+          <i class="bi bi-list text-3xl"></i>
+        </button>
+      </div>
+    </div>
+    <div class="hidden mobile-menu">
+      <ul class="">
+        <li><a href="#" class="block text-sm px-2 py-4 hover:bg-gray-700">Home</a></li>
+        <li><a href="#" class="block text-sm px-2 py-4 hover:bg-gray-700">About</a></li>
+        <li><a href="#" class="block text-sm px-2 py-4 hover:bg-gray-700">Support</a></li>
+        <li><a href="#" class="block text-sm px-2 py-4 hover:bg-gray-700">Social</a></li>
+      </ul>
     </div>
   </header>
   <!-- Header/Navbar Akhir -->
@@ -58,7 +73,8 @@
       </div>
     </section>
 
-    <section class="h-screen"></section>
+    <section class="h-screen" id="section-two">
+    </section>
   </main>
   <!-- Halaman Pertama Akhir -->
 
@@ -69,31 +85,33 @@
   </div> -->
 
   <script>
-    // function searchFunction() {
-    //     // Tambahkan logika pencarian Anda di sini
-    //     alert("Search button clicked!");
-    //   }
+    const menuButton = document.getElementById('menu-button');
+    const mobileMenu = document.querySelector('.mobile-menu');
+    const searchBar = document.getElementById('search-bar');
+    const sectionTwo = document.getElementById('section-two');
 
-    // function toggle() {
-    //   let content = document.getElementById("content");
-    //   let popup = document.getElementById("popup");
+    menuButton.addEventListener('click', () => {
+      mobileMenu.classList.toggle('hidden');
+    });
 
-    //   content.classList.toggle("blur");
-    //   popup.classList.remove("hidden");
-    // }
-    // document.addEventListener("click", function (e) {
-    //   let content = document.getElementById("content");
-    //   let popup = document.getElementById("popup");
-    //   let isClickInsidePopup = popup.contains(e.target);
-    //   let isClickInsideContent = content.contains(e.target);
+    window.addEventListener('scroll', () => {
+      const sectionTwoTop = sectionTwo.offsetTop;
+      const scrollPosition = window.scrollY + window.innerHeight;
 
-    //   if (!isClickInsidePopup && !isClickInsideContent) {
-    //     content.classList.remove("blur");
-    //     popup.classList.add("hidden");
-    //   } else if (isClickInsidePopup) {
-    //     // Do nothing if the click is inside the popup
-    //   }
-    // });
+      if (scrollPosition >= sectionTwoTop) {
+        searchBar.classList.add('hidden-search');
+        searchBar.classList.add('no-border');
+      } else {
+        searchBar.classList.remove('hidden-search');
+        searchBar.classList.remove('no-border');
+      }
+    });
+
+    document.addEventListener('click', (event) => {
+      if (!menuButton.contains(event.target) && !mobileMenu.contains(event.target)) {
+        mobileMenu.classList.add('hidden');
+      }
+    });
   </script>
 </body>
 </html>
